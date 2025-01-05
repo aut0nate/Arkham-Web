@@ -1,144 +1,135 @@
 # Arkham Web
 
-Welcome to the Arkham Web repository! This project is a test site built for a fictitious company named Arkham. It is a fully responsive, modern web application developed using ASP.NET Core. This project is available to anyone who would like a website for their testing requirements, so please feel free to clone or fork it.
+Welcome to the Arkham Web repository! This is a static website built for a fictitious company named Arkham. It features a fully responsive design with modern styling, making it ideal for use as a test site or a personal project.
 
 ## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Pages](#pages)
-- [Installation](#installation)
+- [File Structure](#file-structure)
 - [Usage](#usage)
-- [Customisation](#customisation)
+- [Running with Docker](#running-with-docker)
 - [Contributing](#contributing)
 - [License](#license)
 
+---
+
 ## Overview
 
-Arkham is a fictitious company specializing in AI and Automation solutions. This website serves as the online presence for Arkham, offering insights into the company's services, team, and vision. It is designed to be user-friendly and visually appealing, with a modern layout and a responsive design that works across all devices.
+Arkham Web is a simple, static website project that demonstrates clean design principles and responsiveness using modern web technologies such as HTML5, CSS3, and JavaScript. It includes pre-built pages such as:
+
+- **Home**
+- **About**
+- **Services**
+- **Contact**
+
+This project is ideal for anyone looking for a pre-built website for testing purposes.
+
+---
 
 ## Features
 
-- **Responsive Design**: Ensures a seamless user experience on all devices, from desktops to smartphones.
-- **Hero Section**: Highlights Arkham's mission and services with eye-catching visuals and a clear call to action.
-- **Services Overview**: Showcases the various AI and Automation solutions offered by Arkham.
-- **Team Page**: Introduces the key members of Arkham, complete with social media links.
-- **Contact Information**: Provides easy access to contact details, including a subscription form for updates.
-- **Footer with Social Links**: Includes address details, quick links, and social media icons.
+- **Fully Responsive Design**: Works seamlessly across different screen sizes and devices.
+- **Clean, Modern UI**: Styled using Bootstrap and custom CSS for a professional look.
+- **Easy to Customize**: The modular structure allows for straightforward customization.
+- **Cross-Browser Compatibility**: Compatible with modern browsers, including Chrome, Firefox, and Edge.
 
-## Technology Stack
-
-The website is built using the following technologies:
-
-- **ASP.NET Core**: Provides a robust and scalable backend.
-- **HTML5 & CSS3**: Ensures a modern and responsive design.
-- **Bootstrap 5**: Assists with responsive design and UI components.
-- **Font Awesome**: Adds scalable vector icons and social media links.
-- **JavaScript (jQuery)**: Enhances interactive elements and user experience.
-
-## Pages
-
-1. **Home Page**
-   - *Hero Section*: Features a headline and a call to action introducing Arkham's mission.
-   - *Services Overview*: Summarizes the key services provided by Arkham, with links to detailed service pages.
-   - *Logo*: The Arkham logo is prominently displayed in the navigation bar next to the site name.
-
-2. **About Page**
-   - *Company Overview*: Details Arkham's history, mission, and vision.
-   - *Mission and Vision Statements*: Clearly defined statements emphasizing the company's goals and aspirations.
-
-3. **Services Page**
-   - *Service Details*: Breaks down all the services offered by Arkham, including AI App Builder, Automation, Consulting, and more.
-
-4. **Team Page**
-   - *Team Member Profiles*: Introduces the key members of the Arkham team, with photos, titles, and social media links.
-
-5. **Footer**
-   - *Contact Information*: Includes address, phone number, and email.
-   - *Social Media Links*: Links to the company's social media profiles on platforms like Facebook, Twitter, LinkedIn, and Instagram.
-   - *Subscription Form*: A simple form for users to subscribe to newsletters or updates.
-
-## Installation
-
-To set up the project locally, follow these steps:
-
-1. **Clone the repository**:
-
-```bash
-   git clone https://github.com/aut0nate/Arkham-Web.git
-```
-
-2. **Navigate to the project directory**:
-
-```bash
-cd Arkham-Web
-```
-
-3. Install dependencies:
-
-```bash
-dotnet restore
-```
-
-4. Build the project:
-
-```bash
-dotnet build
-```
-
-5. Run the application:
-
-```bash
-    dotnet run
-```
+---
 
 ## Usage
 
-Once the website is running, you can explore the various pages, including:
+You can run this static website by opening the `index.html` file directly in a browser or by serving it through a simple HTTP server.
 
-- **Home:** Explore the mission and services of Arkham.
-- **About:** Learn about the company's history, mission, and vision.
-- **Services:** Discover the full range of AI and Automation services offered by Arkham.
-- **Team:** Meet the key members of the team.
-- **Footer:** Find contact information, quick links, and social media connections.
+### **Option 1: Open Directly**
 
-## Customisation
+1. Download or clone the repository:
 
-To customize the website, you can modify the following files:
+   ```bash
+   git clone https://github.com/aut0nate/Arkham-Web.git
+   ```
+  
+2. Open index.html in your browser.
 
-- **_Layout.cshtml:** Adjust the overall layout, including the header, footer, and navigation bar.
-- **Index.cshtml:** Modify the content on the homepage.
-- **custom.css:** Customize the website's styling, including colours, fonts, and layout adjustments.
-- **Images:** Replace the default images with your own by updating the image files in the wwwroot/images folder.
+### Option 2: Use a Local HTTP Server
+
+If you'd prefer to serve the website locally using a proper web server, you can use **Nginx** or **Apache**. Below are simple steps to set up the site with either of these servers:
+
+#### **Using Nginx**
+
+1. **Install Nginx via your preferred package manager** (if not already installed):
+
+   ```bash
+   sudo apt update
+   sudo apt install nginx
+   ```
+
+2. Copy the website files to Nginx’s root directory:
+
+   ```bash
+   sudo cp -r /path/to/Arkham-Web/* /var/www/html/
+   ```
+  
+3. Restart Nginx to apply changes:
+
+   ```bash
+   sudo systemctl restart nginx
+   ```
+
+4. Open your browser and go to <http://localhost>.
+
+#### Using Apache
+
+1. Install Apache via your preferred package manager (if not already installed):
+
+   ```bash
+   sudo apt update
+   sudo apt install apache2
+   ```
+
+2. Copy the website files to Apache’s root directory:
+
+   ```bash
+   sudo cp -r /path/to/Arkham-Web/* /var/www/html/
+   ```
+
+3. Restart Apache to apply changes:
+
+   ```bash
+   sudo systemctl restart apache2
+   ```
+
+4. Open your browser and go to <http://localhost>.
+
+---
+
+## Running with Docker
+
+This project includes a Dockerfile that allows you to run the website in a lightweight Nginx container.
+
+Steps to Run with Docker:
+
+1. Build the Docker image:
+
+   ```bash
+   docker build -t arkham-web .
+   ```
+
+2. Run the Docker container:
+
+   ```bash
+    docker run -d -p 8080:80 --name arkham-web arkham-web
+   ```
+
+3. Open your browser and go to <http://localhost:8080>.
 
 ## Contributing
 
-I welcome contributions to the Arkham website! To contribute:
-
-1. Fork the repository.
-2. Create a new branch:
-
-```bash
-git checkout -b feature/your-feature
-```
-
-3. Commit your changes:
-
-```bash
-git commit -m 'Add some feature'
-```
-
-4. Push to the branch:
-
-```bash
-git push origin feature/your-feature
-```
-
-5. Open a pull request.
+Contributions are welcome! If you'd like to improve the design, add new features, or fix any issues, feel free to fork this repository and submit a pull request.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
-**Note:** This website is intended for testing purposes. The developer is not a professional web developer and used ChatGPT to assist in building this website to support specific use cases, including learning more about Azure Cloud Services, Azure DevOps, CI/CD pipelines, and version control using Git.
+---
+
+**Disclaimer:** This project is for educational and personal use only. It is not intended for commercial purposes.I am not a professional web developer, I used ChatGPT to assist in building this website to support specific use cases, including learning more about Azure Cloud Services, Azure DevOps, CI/CD pipelines, and version control using Git.
