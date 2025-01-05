@@ -10,7 +10,7 @@ Welcome to the Arkham Web repository! This project is a test site built for a fi
 - [Pages](#pages)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Customisation](#customization)
+- [Customisation](#customisation)
 - [Contributing](#contributing)
 - [License](#license)
 
