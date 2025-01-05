@@ -1,5 +1,7 @@
 # Arkham Web
 
+[![Github Pages](https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white)](https://aut0nate.github.io/Arkham-Web/index.html)
+
 Welcome to the Arkham Web repository! This is a static website built for a fictitious company named Arkham. It features a fully responsive design with modern styling, making it ideal for use as a test site or a personal project.
 
 ## Table of Contents
@@ -122,12 +124,6 @@ Steps to Run with Docker:
    ```
 
 3. Open your browser and go to <http://localhost:8080>.
-
-## Demo
-
-Click on the link below to view a live demo of the website:
-
-[![Github Pages](https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white)](https://aut0nate.github.io/Arkham-Web/index.html)
 
 ## Contributing
 
