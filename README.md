@@ -9,6 +9,7 @@ Welcome to the Arkham Web repository! This is a static website built for a ficti
 - [File Structure](#file-structure)
 - [Usage](#usage)
 - [Running with Docker](#running-with-docker)
+- [Live Demo](#demo)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -117,10 +118,16 @@ Steps to Run with Docker:
 2. Run the Docker container:
 
    ```bash
-    docker run -d -p 8080:80 --name arkham-web arkham-web
+   docker run -d -p 8080:80 --name arkham-web arkham-web
    ```
 
 3. Open your browser and go to <http://localhost:8080>.
+
+## Demo
+
+Click on the link below to view a live demo of the website:
+
+[![Github Pages](https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white)](https://aut0nate.github.io/Arkham-Web/index.html)
 
 ## Contributing
 
