@@ -4,7 +4,7 @@
 
 Welcome to the Arkham Web repository! This is a static website built for a fictitious company named Arkham. It features a fully responsive design with modern styling, making it ideal for use as a test site or a personal project.
 
-## Table of Contents
+## Contents
 
 - [Overview](#overview)
 - [Features](#features)
