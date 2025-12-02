@@ -43,16 +43,17 @@ The layout is tuned to look good on desktops first (like a marketing site), but 
   - Each card has an icon, title, descriptive copy, and CTA.
 
 - **Contact and subscription flows**
-  - Contact page with a structured project enquiry form (name, email, company, phone, message, consent).
+  - Contact page with a structured project enquiry form (name, email, company, phone, message, consent) that posts to `/api/contact` with client-side validation and inline status messages.
   - Footer email “Subscribe” form on all main pages (wired to `mailto:` for simplicity, easy to swap for a real endpoint).
 
 - **Simple tech stack**
-  - No build system or JS framework required.
+  - No build system or JS framework required for the frontend.
+  - Lightweight Node.js server (no external dependencies) handles static files plus the contact API endpoint.
   - Uses Bootstrap for layout, Font Awesome for icons, Google Fonts, and a small amount of vanilla JS for behaviour (e.g. current year, carousel/slider).
 
 - **Deployment‑friendly**
   - Works as a static site (GitHub Pages, Azure Static Web Apps, Nginx, Apache).
-  - Includes a Dockerfile for containerised hosting via Nginx.
+  - Includes a Dockerfile for containerised hosting via Node.js so the contact API is available alongside the static files.
 
 ## File Structure
 
@@ -68,11 +69,11 @@ Key files in the `Arkham-Web` folder:
 - `css/responsive.css` – Additional responsive tweaks.
 - `images/` – Logos, hero illustration, and service icons.
 - `js/` – Any JavaScript used for basic interactivity.
-- `Dockerfile` – Nginx‑based container image for the static site.
+- `Dockerfile` – Node‑based container image that serves static files and the contact API.
 
 ## Usage
 
-You can run this static website by opening `index.html` directly in a browser or by serving it through a simple HTTP server.
+You can run this static website by opening `index.html` directly in a browser or by serving it through a simple HTTP server. To use the contact API endpoint, run it via the Node.js server.
 
 ### Option 1: Open Directly
 
@@ -85,9 +86,25 @@ You can run this static website by opening `index.html` directly in a browser or
 
 2. Double‑click index.html (or open it from your editor) in your browser.
 
-### Option 2: Use a Local HTTP Server
+### Option 2: Serve with Node.js (enables /api/contact)
 
-If you prefer to run behind a local web server (recommended for testing relative paths and assets), you can use Python:
+1. Install dependencies (there are no external packages, but this creates `package-lock.json`):
+
+   ```bash
+   npm install
+   ```
+
+2. Start the server:
+
+   ```bash
+   npm start
+   ```
+
+3. Open http://localhost:3000 to view the site. The contact form will POST to `/api/contact`, validate required fields, and persist submissions to `data/contact_submissions.json`.
+
+### Option 3: Use a Local HTTP Server
+
+If you prefer to run behind a local web server (recommended for testing relative paths and assets) and do not need the contact API, you can use Python:
 
    ```bash
    cd Arkham-Web
@@ -98,7 +115,7 @@ For Nginx or Apache, copy the contents of Arkham-Web into the appropriate docume
 
 ## Running with Docker
 
-This project includes a Dockerfile that serves the site via Nginx.
+This project includes a Dockerfile that serves the site via Node.js so the contact API remains available.
 
 Build the image:
 
@@ -109,7 +126,7 @@ Build the image:
 Run the container:
 
   ```bash
-   docker run -d -p 8080:80 --name arkham-web arkham-web
+   docker run -d -p 8080:3000 --name arkham-web arkham-web
    ```
 
 Open http://localhost:8080 to view the site.
