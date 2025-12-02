@@ -122,14 +122,32 @@ if (window.jQuery && $(".client_owl-carousel").length) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
       },
       body: JSON.stringify(payload),
     })
       .then(function (response) {
-        if (response.ok) return response.json();
-        return response.json().then(function (data) {
-          throw data;
-        });
+        return response
+          .text()
+          .then(function (text) {
+            var data = null;
+            try {
+              data = text ? JSON.parse(text) : null;
+            } catch (err) {
+              // Fall through to generic handling
+            }
+
+            if (response.ok) {
+              return data || { success: true };
+            }
+
+            var errorPayload = data || { error: text || 'Request failed' };
+            throw errorPayload;
+          })
+          .catch(function (err) {
+            throw err;
+          });
       })
       .then(function () {
         contactForm.reset();
@@ -146,7 +164,13 @@ if (window.jQuery && $(".client_owl-carousel").length) {
             }
           });
         }
-        var message = (error && error.message) || 'Unable to submit your enquiry right now. Please try again later.';
+
+        var message = 'Unable to submit your enquiry right now. Please try again later.';
+        if (error) {
+          var details = Array.isArray(error.details) ? error.details.join(' ') : '';
+          message = [error.error || error.message, details].filter(Boolean).join(' ').trim() || message;
+        }
+
         showStatus(message, 'danger');
       })
       .finally(function () {
