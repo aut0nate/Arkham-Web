@@ -224,6 +224,7 @@ th {
 label {
   display: inline-block;
   margin-bottom: 0.5rem;
+  color: white;
 }
 
 button {
@@ -592,6 +593,7 @@ pre code {
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
+  color: black;
 }
 
 .no-gutters {
@@ -1003,6 +1005,7 @@ pre code {
     flex-grow: 1;
     max-width: 100%;
   }
+
   .col-md-auto {
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
@@ -1038,6 +1041,8 @@ pre code {
     -ms-flex: 0 0 50%;
     flex: 0 0 50%;
     max-width: 50%;
+    color: white;
+
   }
   .col-md-7 {
     -ms-flex: 0 0 58.333333%;
@@ -6224,9 +6229,7 @@ a.close.disabled {
 
 .carousel-inner {
   position: relative;
-  width: 100%;
-  overflow: hidden;
-}
+  width: 110%;}
 
 .carousel-inner::after {
   display: block;
@@ -6238,7 +6241,7 @@ a.close.disabled {
   position: relative;
   display: none;
   float: left;
-  width: 100%;
+  width: 120%;
   margin-right: -100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
