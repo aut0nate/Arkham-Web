@@ -36,3 +36,121 @@ if (window.jQuery && $(".client_owl-carousel").length) {
     },
   });
 }
+
+// contact form validation + submission
+(function () {
+  var contactForm = document.querySelector('#contactForm');
+  if (!contactForm) return;
+
+  var fieldErrors = {
+    name: contactForm.querySelector('[data-error-for="name"]'),
+    email: contactForm.querySelector('[data-error-for="email"]'),
+    phone: contactForm.querySelector('[data-error-for="phone"]'),
+    message: contactForm.querySelector('[data-error-for="message"]'),
+    consent: contactForm.querySelector('[data-error-for="consent"]'),
+  };
+
+  var statusEl = contactForm.querySelector('[data-role="form-status"]');
+  var submitBtn = contactForm.querySelector('button[type="submit"]');
+  var endpoint = contactForm.getAttribute('action') || '/api/contact';
+
+  function setFieldError(fieldName, message) {
+    if (!fieldErrors[fieldName]) return;
+    fieldErrors[fieldName].textContent = message || '';
+    if (message) {
+      fieldErrors[fieldName].classList.remove('d-none');
+    } else {
+      fieldErrors[fieldName].classList.add('d-none');
+    }
+  }
+
+  function clearServerErrors() {
+    Object.keys(fieldErrors).forEach(function (key) {
+      setFieldError(key, '');
+    });
+  }
+
+  function showStatus(message, type) {
+    if (!statusEl) return;
+    statusEl.classList.remove('d-none', 'alert-success', 'alert-danger');
+    statusEl.classList.add(type === 'success' ? 'alert-success' : 'alert-danger');
+    statusEl.textContent = message;
+  }
+
+  contactForm.addEventListener('input', function (event) {
+    var target = event.target;
+    if (!target || !target.name) return;
+
+    target.setCustomValidity('');
+    if (target.checkValidity()) {
+      setFieldError(target.name, '');
+      target.classList.remove('is-invalid');
+    }
+  });
+
+  contactForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    clearServerErrors();
+    if (statusEl) statusEl.classList.add('d-none');
+
+    contactForm.classList.add('was-validated');
+
+    if (!contactForm.checkValidity()) {
+      Object.keys(fieldErrors).forEach(function (key) {
+        var field = contactForm.elements[key];
+        if (field && !field.checkValidity()) {
+          setFieldError(key, field.validationMessage);
+          field.classList.add('is-invalid');
+        }
+      });
+      return;
+    }
+
+    var payload = {
+      name: contactForm.name.value.trim(),
+      email: contactForm.email.value.trim(),
+      company: contactForm.company ? contactForm.company.value.trim() : '',
+      phone: contactForm.phone.value.trim(),
+      message: contactForm.message.value.trim(),
+      consent: contactForm.consent.checked,
+    };
+
+    if (submitBtn) submitBtn.disabled = true;
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(function (response) {
+        if (response.ok) return response.json();
+        return response.json().then(function (data) {
+          throw data;
+        });
+      })
+      .then(function () {
+        contactForm.reset();
+        contactForm.classList.remove('was-validated');
+        showStatus('Thanks for reaching out. We will contact you shortly.', 'success');
+      })
+      .catch(function (error) {
+        if (error && error.errors) {
+          Object.keys(error.errors).forEach(function (key) {
+            if (fieldErrors[key]) {
+              setFieldError(key, error.errors[key]);
+              var field = contactForm.elements[key];
+              if (field) field.classList.add('is-invalid');
+            }
+          });
+        }
+        var message = (error && error.message) || 'Unable to submit your enquiry right now. Please try again later.';
+        showStatus(message, 'danger');
+      })
+      .finally(function () {
+        if (submitBtn) submitBtn.disabled = false;
+      });
+  });
+})();
