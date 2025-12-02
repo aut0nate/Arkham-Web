@@ -21,6 +21,12 @@ const auth0Config = {
   audience: process.env.AUTH0_AUDIENCE || ''
 };
 
+const auth0Config = {
+  domain: process.env.AUTH0_DOMAIN || '',
+  clientId: process.env.AUTH0_CLIENT_ID || '',
+  audience: process.env.AUTH0_AUDIENCE || ''
+};
+
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css',
@@ -59,6 +65,40 @@ function dynamicCors(req, res, next) {
   }
 
   next();
+}
+
+function handleAuthConfig(req, res, origin, hostHeader) {
+  if (!setCorsHeaders(res, origin, hostHeader)) {
+    sendJson(res, 403, { error: 'Origin not allowed' });
+    return;
+  }
+
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 204;
+    res.end();
+    return;
+  }
+
+  if (req.method !== 'GET') {
+    sendJson(res, 405, { error: 'Method not allowed' }, origin, hostHeader);
+    return;
+  }
+
+  if (!auth0Config.domain || !auth0Config.clientId) {
+    sendJson(
+      res,
+      500,
+      {
+        error: 'Auth0 configuration is missing',
+        details: 'Set AUTH0_DOMAIN and AUTH0_CLIENT_ID environment variables to enable authentication.'
+      },
+      origin,
+      hostHeader
+    );
+    return;
+  }
+
+  sendJson(res, 200, auth0Config, origin, hostHeader);
 }
 
 function handleAuthConfig(req, res, origin, hostHeader) {
