@@ -318,19 +318,35 @@
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Accept': 'application/json',
               'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify(payload)
           });
 
-          const data = await response.json();
+          const contentType = response.headers.get('content-type') || '';
+          let responseText = '';
+          let data = null;
 
-          if (response.ok && data.success) {
+          try {
+            responseText = await response.text();
+            if (contentType.includes('application/json') && responseText.trim()) {
+              data = JSON.parse(responseText);
+            }
+          } catch (parseError) {
+            // Continue to show a fallback message below
+          }
+
+          if (response.ok && data?.success) {
             showStatus('Thanks! Your message has been sent. We will reply within one business day.', 'success');
             contactForm.reset();
           } else {
-            const details = data.details ? ` ${data.details.join(' ')}` : '';
-            showStatus(data.error ? `${data.error}.${details}` : 'Unable to send your message. Please try again later.', 'danger');
+            const details = data?.details ? ` ${data.details.join(' ')}` : '';
+            const serverMessage = data?.error || responseText.trim();
+            const message = serverMessage
+              ? `${serverMessage}.${details}`
+              : 'Unable to send your message. Please try again later.';
+            showStatus(message, 'danger');
           }
         } catch (error) {
           showStatus('Unable to send your message. Please check your connection and try again.', 'danger');
