@@ -116,7 +116,7 @@ Open http://localhost:8080 to view the site.
 
 ## Live Demo
 
-GitHub Pages: [https://aut0nate.github.io/Arkham-Web/index.html](https://aut0nate.github.io/Arkham-Web/index.html)
+GitHub Pages: [https://arkham.live](https://arkham.live)
 
 (You can also deploy the same static assets to Azure Static Web Apps, Azure App Service with a container, or any other static host.)
 
