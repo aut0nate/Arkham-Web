@@ -1,8 +1,7 @@
-const http = require('http');
-const fs = require('fs');
-const fsp = require('fs').promises;
+const express = require('express');
 const path = require('path');
-const url = require('url');
+const fsp = require('fs').promises;
+const { auth, requiresAuth, handleLogin, handleLogout, handleCallback } = require('express-openid-connect');
 
 const PORT = process.env.PORT || 3000;
 const ROOT_DIR = __dirname;
@@ -14,7 +13,7 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
   .map((value) => value.trim())
   .filter(Boolean);
 
-const defaultOrigin = `http://localhost:${PORT}`;
+const defaultOrigin = process.env.AUTH0_BASE_URL || process.env.BASE_URL || `http://localhost:${PORT}`;
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -32,14 +31,14 @@ const mimeTypes = {
   '.ttf': 'font/ttf'
 };
 
-function setCorsHeaders(res, origin, hostHeader) {
+function dynamicCors(req, res, next) {
+  const origin = req.headers.origin || '';
+  const hostHeader = req.headers.host || '';
   const hostOrigin = hostHeader ? `http://${hostHeader}` : '';
-  const permitted = allowedOrigins.length
-    ? allowedOrigins
-    : [origin, hostOrigin, defaultOrigin].filter(Boolean);
+  const permitted = allowedOrigins.length ? allowedOrigins : [origin, hostOrigin, defaultOrigin].filter(Boolean);
 
   if (origin && allowedOrigins.length && !permitted.includes(origin)) {
-    return false;
+    return res.status(403).json({ error: 'Origin not allowed' });
   }
 
   const allowOrigin = origin || permitted[0] || defaultOrigin;
@@ -48,14 +47,12 @@ function setCorsHeaders(res, origin, hostHeader) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Max-Age', '86400');
-  return true;
-}
 
-function sendJson(res, statusCode, payload, origin, hostHeader) {
-  res.statusCode = statusCode;
-  setCorsHeaders(res, origin, hostHeader);
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(payload));
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
 }
 
 function validatePayload(body) {
@@ -108,117 +105,100 @@ async function saveSubmission(entry) {
   await fsp.writeFile(SUBMISSION_FILE, JSON.stringify(submissions, null, 2));
 }
 
-function serveStatic(req, res) {
-  const parsedUrl = url.parse(req.url);
-  const sanitizePath = path.normalize(parsedUrl.pathname).replace(/^\/+/, '');
-  let pathname = path.join(ROOT_DIR, sanitizePath || 'index.html');
-
-  if (!pathname.startsWith(ROOT_DIR)) {
-    res.statusCode = 403;
-    res.end('Access denied');
-    return;
-  }
-
-  fs.stat(pathname, (err, stats) => {
-    if (err) {
-      res.statusCode = 404;
-      res.end('Not found');
-      return;
-    }
-
-    if (stats.isDirectory()) {
-      pathname = path.join(pathname, 'index.html');
-    }
-
-    const ext = path.extname(pathname).toLowerCase();
-    const contentType = mimeTypes[ext] || 'application/octet-stream';
-
-    fs.readFile(pathname, (readErr, data) => {
-      if (readErr) {
-        res.statusCode = 500;
-        res.end('Server error');
-        return;
-      }
-
-      res.statusCode = 200;
-      res.setHeader('Content-Type', contentType);
-      res.end(data);
-    });
-  });
+function mapStaticContentTypes(res, filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType = mimeTypes[ext] || 'application/octet-stream';
+  res.setHeader('Content-Type', contentType);
 }
 
-async function handleContact(req, res, origin, hostHeader) {
-  if (!setCorsHeaders(res, origin, hostHeader)) {
-    sendJson(res, 403, { error: 'Origin not allowed' });
-    return;
+const app = express();
+app.use(express.json());
+
+const authConfig = {
+  authRequired: false,
+  auth0Logout: true,
+  issuerBaseURL: process.env.AUTH0_DOMAIN ? `https://${process.env.AUTH0_DOMAIN}` : undefined,
+  baseURL: defaultOrigin,
+  clientID: process.env.AUTH0_CLIENT_ID,
+  secret: process.env.AUTH0_CLIENT_SECRET,
+  session: {
+    name: 'arkham.sid'
+  },
+  authorizationParams: {
+    response_type: 'code',
+    scope: 'openid profile email'
   }
+};
 
-  if (req.method === 'OPTIONS') {
-    res.statusCode = 204;
-    res.end();
-    return;
-  }
+app.use(auth(authConfig));
 
-  if (req.method !== 'POST') {
-    sendJson(res, 405, { error: 'Method not allowed' }, origin, hostHeader);
-    return;
-  }
+app.get(
+  '/login',
+  handleLogin((req) => {
+    const connection = process.env.AUTH0_ENTRA_CONNECTION;
+    const returnTo = req.query.returnTo || '/';
+    const authorizationParams = connection ? { connection } : undefined;
 
-  if (req.headers['x-requested-with'] !== 'XMLHttpRequest') {
-    sendJson(res, 400, { error: 'Invalid submission source.' }, origin, hostHeader);
-    return;
-  }
-
-  let rawBody = '';
-  req.on('data', (chunk) => {
-    rawBody += chunk.toString();
-    if (rawBody.length > 1e6) {
-      req.socket.destroy();
-    }
-  });
-
-  req.on('end', async () => {
-    let parsed;
-    try {
-      parsed = JSON.parse(rawBody || '{}');
-    } catch (err) {
-      sendJson(res, 400, { error: 'Invalid JSON payload.' }, origin, hostHeader);
-      return;
-    }
-
-    const validation = validatePayload(parsed);
-    if (!validation.isValid) {
-      sendJson(res, 400, { error: 'Validation failed', details: validation.errors }, origin, hostHeader);
-      return;
-    }
-
-    const submission = {
-      ...validation.payload,
-      submittedAt: new Date().toISOString(),
-      ip: req.socket.remoteAddress
+    return {
+      returnTo,
+      authorizationParams
     };
+  })
+);
 
-    try {
-      await saveSubmission(submission);
-      sendJson(res, 200, { success: true }, origin, hostHeader);
-    } catch (err) {
-      console.error('Error saving submission', err);
-      sendJson(res, 500, { error: 'Unable to save your request at this time.' }, origin, hostHeader);
-    }
-  });
-}
+app.get('/callback', handleCallback());
+app.get('/logout', handleLogout());
 
-const server = http.createServer((req, res) => {
-  if (req.url.startsWith('/api/contact')) {
-    const origin = req.headers.origin || '';
-    const hostHeader = req.headers.host || '';
-    handleContact(req, res, origin, hostHeader);
-    return;
+app.post('/api/contact', dynamicCors, async (req, res) => {
+  if (req.headers['x-requested-with'] !== 'XMLHttpRequest') {
+    return res.status(400).json({ error: 'Invalid submission source.' });
   }
 
-  serveStatic(req, res);
+  const validation = validatePayload(req.body || {});
+  if (!validation.isValid) {
+    return res.status(400).json({ error: 'Validation failed', details: validation.errors });
+  }
+
+  const submission = {
+    ...validation.payload,
+    submittedAt: new Date().toISOString(),
+    ip: req.socket.remoteAddress
+  };
+
+  try {
+    await saveSubmission(submission);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error saving submission', err);
+    res.status(500).json({ error: 'Unable to save your request at this time.' });
+  }
 });
 
-server.listen(PORT, () => {
+app.get('/api/profile', dynamicCors, requiresAuth(), (req, res) => {
+  const user = req.oidc.user || req.oidc.idTokenClaims || {};
+  res.json({
+    user,
+    idTokenClaims: req.oidc.idTokenClaims || null
+  });
+});
+
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  next();
+});
+
+app.use(
+  express.static(ROOT_DIR, {
+    setHeaders: (res, filePath) => mapStaticContentTypes(res, filePath)
+  })
+);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(ROOT_DIR, 'index.html'));
+});
+
+app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
