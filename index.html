@@ -513,6 +513,53 @@
   <!-- end client section -->
 
 
+  <!-- auth section -->
+  <section class="auth_section layout_padding" id="auth-section">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Secure <span>Portal Access</span>
+        </h2>
+        <p>
+          Sign in with your Entra ID through Auth0 to view your profile claims and connected tenant details.
+        </p>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-actions">
+          <button id="btn-login" class="btn1" type="button" disabled>
+            Sign in
+          </button>
+          <button id="btn-logout" class="btn2" type="button" disabled>
+            Sign out
+          </button>
+          <span id="auth-status" class="auth-status">Loading authentication...</span>
+        </div>
+
+        <div id="profile-loading" class="auth-alert auth-alert--info">
+          Loading profile...
+        </div>
+        <div id="profile-error" class="auth-alert auth-alert--error" hidden></div>
+
+        <div id="profile-panel" class="profile-card" hidden>
+          <h4>Profile</h4>
+          <dl id="profile-claims" class="profile-claims"></dl>
+        </div>
+      </div>
+    </div>
+
+    <script id="auth-config" type="application/json">
+      {
+        "domain": "${AUTH0_DOMAIN}",
+        "clientId": "${AUTH0_CLIENT_ID}",
+        "audience": "${AUTH0_AUDIENCE}"
+      }
+    </script>
+  </section>
+
+  <!-- end auth section -->
+
+
   <!-- info section -->
 
   <section class="info_section layout_padding2">
@@ -611,6 +658,8 @@
   <!-- footer section -->
 
   <!-- jQery -->
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js" defer></script>
+  <script type="text/javascript" src="js/auth.js" defer></script>
   <script type="text/javascript" src="js/jquery-3.4.1.min.js" defer></script>
   <!-- popper js -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous" defer>
