@@ -1,8 +1,15 @@
-# Use the official Nginx image
-FROM nginx:alpine
+# Use a lightweight Node.js image to serve static content and the API
+FROM node:18-alpine
 
-# Copy the website files into the Nginx default directory
-COPY . /usr/share/nginx/html
+WORKDIR /app
 
-# Expose port 80 to make the site accessible
-EXPOSE 80
+COPY package.json ./
+
+# Install production dependencies (none by default) to support the API runtime
+RUN npm install --production=false
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

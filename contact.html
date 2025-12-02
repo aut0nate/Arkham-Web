@@ -129,7 +129,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-8 col-xl-6">
           <div class="form_container">
-            <form action="mailto:contact@arkham.live" method="post" enctype="text/plain">
+            <form id="contactForm" novalidate>
               <div class="form-group">
                 <label for="contactName">Full name</label>
                 <input type="text" class="form-control" id="contactName" name="name" required placeholder="Jane Doe" autocomplete="name">
@@ -157,6 +157,7 @@
               <button type="submit" class="btn btn-primary btn-block">
                 Send message
               </button>
+              <div id="contactStatus" class="alert mt-3 d-none" role="status" aria-live="polite"></div>
             </form>
           </div>
         </div>
@@ -273,6 +274,67 @@
   </script>
   <!-- custom js -->
   <script type="text/javascript" src="js/custom.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const contactForm = document.getElementById('contactForm');
+      const statusEl = document.getElementById('contactStatus');
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+      function showStatus(message, type) {
+        statusEl.textContent = message;
+        statusEl.classList.remove('d-none', 'alert-success', 'alert-danger');
+        statusEl.classList.add(type === 'success' ? 'alert-success' : 'alert-danger', 'alert');
+      }
+
+      contactForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        statusEl.classList.add('d-none');
+        statusEl.textContent = '';
+
+        if (!contactForm.reportValidity()) {
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        const payload = {
+          name: document.getElementById('contactName').value,
+          email: document.getElementById('contactEmail').value,
+          company: document.getElementById('contactCompany').value,
+          phone: document.getElementById('contactPhone').value,
+          message: document.getElementById('contactMessage').value,
+          consent: document.getElementById('contactConsent').checked
+        };
+
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            showStatus('Thanks! Your message has been sent. We will reply within one business day.', 'success');
+            contactForm.reset();
+          } else {
+            const details = data.details ? ` ${data.details.join(' ')}` : '';
+            showStatus(data.error ? `${data.error}.${details}` : 'Unable to send your message. Please try again later.', 'danger');
+          }
+        } catch (error) {
+          showStatus('Unable to send your message. Please check your connection and try again.', 'danger');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send message';
+        }
+      });
+    });
+  </script>
 
 </body>
 
