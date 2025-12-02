@@ -710,6 +710,10 @@ a:focus {
   position: relative;
 }
 
+.team_section .team_container .box .detail-box p {
+  color: white;
+}
+
 .team_section .team_container .box .social_box {
   padding: 10px 45px 20px 45px;
   display: -webkit-box;
@@ -991,5 +995,6 @@ a:focus {
   position: relative;
   left: 50px;
 }
+
 
 /*# sourceMappingURL=style.css.map */
