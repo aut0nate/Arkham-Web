@@ -129,34 +129,41 @@
       <div class="row justify-content-center">
         <div class="col-lg-8 col-xl-6">
           <div class="form_container">
-            <form action="mailto:contact@arkham.live" method="post" enctype="text/plain">
+            <form id="contactForm" action="/api/contact" method="post" novalidate>
               <div class="form-group">
                 <label for="contactName">Full name</label>
-                <input type="text" class="form-control" id="contactName" name="name" required placeholder="Jane Doe" autocomplete="name">
+                <input type="text" class="form-control" id="contactName" name="name" required placeholder="Jane Doe" autocomplete="name" minlength="2" maxlength="80">
+                <div class="invalid-feedback d-none" data-error-for="name"></div>
               </div>
               <div class="form-group">
                 <label for="contactEmail">Work email</label>
-                <input type="email" class="form-control" id="contactEmail" name="email" required placeholder="you@company.com" autocomplete="email">
+                <input type="email" class="form-control" id="contactEmail" name="email" required placeholder="you@company.com" autocomplete="email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" maxlength="254">
+                <div class="invalid-feedback d-none" data-error-for="email"></div>
               </div>
               <div class="form-group">
                 <label for="contactCompany">Company</label>
-                <input type="text" class="form-control" id="contactCompany" name="company" placeholder="Company name" autocomplete="organization">
+                <input type="text" class="form-control" id="contactCompany" name="company" placeholder="Company name" autocomplete="organization" maxlength="120">
               </div>
               <div class="form-group">
                 <label for="contactPhone">Phone (optional)</label>
-                <input type="tel" class="form-control" id="contactPhone" name="phone" placeholder="" autocomplete="tel">
+                <input type="tel" class="form-control" id="contactPhone" name="phone" placeholder="" autocomplete="tel" pattern="^[+]?[-() \d]{7,20}$" minlength="7" maxlength="20">
+                <div class="invalid-feedback d-none" data-error-for="phone"></div>
               </div>
               <div class="form-group">
                 <label for="contactMessage">Project details</label>
-                <textarea class="form-control" id="contactMessage" name="message" rows="5" required placeholder="What problem are you solving? Timeline, budget, goals."></textarea>
+                <textarea class="form-control" id="contactMessage" name="message" rows="5" required placeholder="What problem are you solving? Timeline, budget, goals." minlength="20" maxlength="1500"></textarea>
+                <div class="invalid-feedback d-none" data-error-for="message"></div>
               </div>
               <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="contactConsent" required aria-required="true">
+                <input type="checkbox" class="form-check-input" id="contactConsent" name="consent" value="yes" required aria-required="true">
                 <label class="form-check-label" for="contactConsent">I agree to be contacted about my enquiry and understand my data will be handled per Arkham's privacy practices.</label>
+                <div class="invalid-feedback d-none" data-error-for="consent"></div>
               </div>
+              <div class="alert d-none" role="alert" data-role="form-status"></div>
               <button type="submit" class="btn btn-primary btn-block">
                 Send message
               </button>
+              <div id="contactStatus" class="alert mt-3 d-none" role="status" aria-live="polite"></div>
             </form>
           </div>
         </div>
@@ -273,6 +280,67 @@
   </script>
   <!-- custom js -->
   <script type="text/javascript" src="js/custom.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const contactForm = document.getElementById('contactForm');
+      const statusEl = document.getElementById('contactStatus');
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+      function showStatus(message, type) {
+        statusEl.textContent = message;
+        statusEl.classList.remove('d-none', 'alert-success', 'alert-danger');
+        statusEl.classList.add(type === 'success' ? 'alert-success' : 'alert-danger', 'alert');
+      }
+
+      contactForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        statusEl.classList.add('d-none');
+        statusEl.textContent = '';
+
+        if (!contactForm.reportValidity()) {
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        const payload = {
+          name: document.getElementById('contactName').value,
+          email: document.getElementById('contactEmail').value,
+          company: document.getElementById('contactCompany').value,
+          phone: document.getElementById('contactPhone').value,
+          message: document.getElementById('contactMessage').value,
+          consent: document.getElementById('contactConsent').checked
+        };
+
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            showStatus('Thanks! Your message has been sent. We will reply within one business day.', 'success');
+            contactForm.reset();
+          } else {
+            const details = data.details ? ` ${data.details.join(' ')}` : '';
+            showStatus(data.error ? `${data.error}.${details}` : 'Unable to send your message. Please try again later.', 'danger');
+          }
+        } catch (error) {
+          showStatus('Unable to send your message. Please check your connection and try again.', 'danger');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send message';
+        }
+      });
+    });
+  </script>
 
 </body>
 
