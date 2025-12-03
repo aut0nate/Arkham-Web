@@ -154,4 +154,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Disclaimer
 
-This project is for educational and personal use only. It is not intended for commercial purposes. It was created with the help of ChatGPT to support specific learning goals, including Azure cloud services, CI/CD pipelines, Docker, and Git‑based workflows.
+This project is for educational and personal use only. It is not intended for commercial purposes. It was created with the help of OpenAI Codex to support specific learning goals, including Azure cloud services, CI/CD pipelines, Docker, and Git‑based workflows.
