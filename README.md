@@ -148,10 +148,11 @@ Contributions are welcome! Ideas that fit nicely with this project:
 
 Fork the repo, create a feature branch, and open a pull request.
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Disclaimer
 
 This project is for educational and personal use only. It is not intended for commercial purposes. It was created with the help of OpenAI Codex to support specific learning goals, including Azure cloud services, CI/CD pipelines, Docker, and Git‑based workflows.
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
