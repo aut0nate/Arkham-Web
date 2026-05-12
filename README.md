@@ -6,12 +6,13 @@ Arkham Web is a static website for a fictitious company named Arkham, an AI prod
 
 It is built for a small studio or personal brand that needs a clear public website, a practical service catalogue, and a simple contact.
 
+![Screenshot or Preview](./images/Arkham-Web.jpeg)
+
 ## Features
 
 - Responsive public pages for home, services, about, and contact.
 - Service catalogue covering AI applications, automation, business intelligence, cloud migration, edge computing, and batch workloads.
 - Contact enquiry form with browser-side validation and server-side validation.
-- Optional Auth0 sign-in support when the required environment variables are provided.
 - Docker-ready Node.js server for static hosting and the `/api/contact` endpoint.
 
 ## Stack
@@ -21,8 +22,9 @@ It is built for a small studio or personal brand that needs a clear public websi
 - Frontend: HTML, CSS, and vanilla JavaScript.
 - Styling: custom CSS with Bootstrap and Font Awesome assets.
 - Storage: local JSON file at `data/contact_submissions.json` for contact submissions.
-- Packaging: Docker.
-- Deployment: Azure App Service for Containers using Azure Container Registry and GitHub Actions.
+- Docker and Docker Compose.
+- GitHub Actions.
+- Azure App Service for Containers using Azure Container Registry.
 
 ## Requirements
 
@@ -30,41 +32,8 @@ Before running this project, install:
 
 - Node.js 18 or newer.
 - npm.
-- Docker, for container testing or server deployment.
+- Docker and Docker Compose, for container testing or server deployment.
 - An Azure subscription with App Service for Containers and Azure Container Registry, for production deployment.
-
-## Configuration (.env)
-
-The site runs without a `.env` file for basic local testing. Create one only when you need to change the port, restrict CORS origins, or enable Auth0.
-
-1. Create a local `.env` file:
-
-    ```bash
-    touch .env
-    ```
-
-2. Update `.env` with values for your local setup:
-
-    ```bash
-    PORT=3000
-    BASE_URL=http://localhost:3000
-    ALLOWED_ORIGINS=http://localhost:3000
-    AUTH0_DOMAIN=
-    AUTH0_CLIENT_ID=
-    AUTH0_CLIENT_SECRET=
-    AUTH0_AUDIENCE=
-    AUTH0_ENTRA_CONNECTION=
-    ```
-
-Environment notes:
-
-- `PORT` controls the local server port. If omitted, the server uses `3000`.
-- `BASE_URL` sets the default public origin used by the server.
-- `ALLOWED_ORIGINS` is a comma-separated list of browser origins allowed to call the API.
-- `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, and `AUTH0_CLIENT_SECRET` enable Auth0 routes when all three are set.
-- `AUTH0_AUDIENCE` is returned to the frontend Auth0 configuration when provided.
-- `AUTH0_ENTRA_CONNECTION` optionally points login to a specific Microsoft Entra connection.
-- Contact submissions are stored locally in `./data/contact_submissions.json`; inside Docker this path is `/app/data/contact_submissions.json`.
 
 ## Test Locally
 
@@ -74,26 +43,15 @@ Environment notes:
     npm install
     ```
 
-2. Create and update `.env` using the configuration steps above, if you need optional settings.
-
-3. Start the site and API:
+2. Start the site:
 
     ```bash
     npm start
     ```
 
-4. Open `http://127.0.0.1:3000`.
+3. Open `http://127.0.0.1:3000`.
 
-5. Test the main pages:
-
-    ```text
-    http://127.0.0.1:3000/
-    http://127.0.0.1:3000/service.html
-    http://127.0.0.1:3000/about.html
-    http://127.0.0.1:3000/contact.html
-    ```
-
-6. Before handing off changes, run:
+4. Before handing off changes, run:
 
     ```bash
     node --check server.js
@@ -102,41 +60,35 @@ Environment notes:
 
 ## Test Locally Using Docker
 
-Docker is useful for checking the Node.js server in a container before deploying it. This repository has a `Dockerfile`, but no local Docker Compose file.
+Docker is useful for checking the container before server deployment. The local Compose file builds the image from this repository, publishes the app on `127.0.0.1:3000` by default, and stores contact submissions in the local `./data` folder.
 
-1. Build the Docker image:
+1. Start the local Docker stack:
 
     ```bash
-    docker build -t arkham-web .
+    docker compose up --build
     ```
 
-2. Start the container:
+    The app will be available at `http://127.0.0.1:3000`.
+
+    To use a different local port, run with `ARKHAM_WEB_PORT`, for example:
 
     ```bash
-    docker run -d -p 8080:3000 --name arkham-web arkham-web
+    ARKHAM_WEB_PORT=8080 docker compose up --build
     ```
 
-    The site will be available at `http://127.0.0.1:8080`.
-
-3. Stop and remove the container when finished:
+2. Stop the stack:
 
     ```bash
-    docker stop arkham-web
-    docker rm arkham-web
+    docker compose down
     ```
 
 ## Server Deployment
 
-Server deployment depends on where the project is hosted. The server should run the tested container image with production configuration stored separately from the repository.
+You can run this on your own server by building the image.
 
-Use the structure that fits your own environment and preferred deployment methods. For public-facing access, put the service behind HTTPS using a reverse proxy such as Nginx Proxy Manager, Caddy, Traefik, a managed platform router, or another preferred option.
+Use the structure that fits your own environment and preferred deployment methods. For public-facing access, put the service behind HTTPS using a reverse proxy such as Nginx Proxy Manager, Caddy, Traefik, or another preferred option.
 
-The current production target is Azure App Service for Containers on the F1 Container plan. Images are published to Azure Container Registry:
-
-```text
-arkham.azurecr.io/arkham-web:latest
-arkham.azurecr.io/arkham-web:<commit-sha>
-```
+My current production target is Azure App Service for Containers. Images are published to Azure Container Registry.
 
 For Azure App Service deployment:
 
@@ -164,20 +116,12 @@ For Azure App Service deployment:
 6. Deploy through GitHub Actions after CI passes on `main`.
 7. Verify the public URL after deployment.
 
-Example production files:
-
-- `Dockerfile`
-- `.github/workflows/ci.yml`
-- `.github/workflows/cd.yml`
-
 After deployment, verify:
 
 - The public homepage loads.
 - The services, about, and contact pages load.
 - Invalid contact forms show validation errors.
 - Valid contact forms are saved to `data/contact_submissions.json`.
-
-Back up contact submissions regularly from the server storage location that contains `data/contact_submissions.json`.
 
 ## GitHub Actions
 
@@ -207,12 +151,10 @@ The GitHub Actions Azure identity needs `AcrPush` on the `arkham` registry and p
 
 ## Security Notes
 
-- Do not commit `.env`.
 - Do not commit `data/contact_submissions.json` or other local contact submissions.
 - Store production secrets in the deployment environment or GitHub Actions secrets, not in the repository.
 - Use GitHub Actions OpenID Connect for Azure deployment instead of storing Azure client secrets.
 - Restrict `ALLOWED_ORIGINS` in production to the public site origin.
-- Rotate exposed secrets immediately.
 - Public visitors should only see content that is intended to be public.
 
 ## AI-Assisted Development

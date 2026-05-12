@@ -1,0 +1,15 @@
+services:
+  arkham-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: arkham-web
+    ports:
+      - "${ARKHAM_WEB_PORT:-3000}:3000"
+    environment:
+      PORT: "3000"
+      BASE_URL: "http://127.0.0.1:${ARKHAM_WEB_PORT:-3000}"
+      ALLOWED_ORIGINS: "http://127.0.0.1:${ARKHAM_WEB_PORT:-3000},http://localhost:${ARKHAM_WEB_PORT:-3000}"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
