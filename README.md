@@ -1,157 +1,229 @@
 # Arkham Web
 
-[![Github Pages](https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white)](https://aut0nate.github.io/Arkham-Web/index.html)
+## Introduction
 
-Arkham Web is a static marketing site for a fictitious London‑based AI and automation consultancy called **Arkham**. It’s designed as a modern, responsive landing page plus supporting sub‑pages that you can use as:
+Arkham Web is a static website for a fictitious company named Arkham, an AI product studio.
 
-- A sandbox for learning Git, CI/CD, Azure, and Docker
-- A reference for layout, styling, and component structure
-- A starting point for your own portfolio or product site
-
-## Overview
-
-The site is built with plain **HTML5**, **CSS3**, and **Bootstrap**, and is intentionally framework‑free so it’s easy to run anywhere (GitHub Pages, Azure Static Web Apps, Nginx, etc.).
-
-The core experience is:
-
-- A **hero landing page** that highlights Arkham’s value proposition around AI and automation, with a primary call‑to‑action and a large hero illustration.
-- A **Services** grid showcasing six structured offerings, each with equal‑height cards and consistent “Read More” CTAs.
-- **About**, **Team**, and **Contact** pages that flesh out the brand, story, and ways to get in touch.
-- A shared **footer** with contact details, social links, and a simple email “Subscribe” form.
-
-The layout is tuned to look good on desktops first (like a marketing site), but remains usable down to mobile widths.
+It is built for a small studio or personal brand that needs a clear public website, a practical service catalogue, and a simple contact.
 
 ## Features
 
-- **Responsive layout**
-  - Bootstrap grid plus custom CSS for a flexible hero section, service cards, and team layout.
-  - Hero content and illustration are aligned and centered for large screens and stack cleanly on smaller devices.
+- Responsive public pages for home, services, about, and contact.
+- Service catalogue covering AI applications, automation, business intelligence, cloud migration, edge computing, and batch workloads.
+- Contact enquiry form with browser-side validation and server-side validation.
+- Optional Auth0 sign-in support when the required environment variables are provided.
+- Docker-ready Node.js server for static hosting and the `/api/contact` endpoint.
 
-- **Coherent Arkham brand**
-  - Logo locked into the top‑left navbar on every page.
-  - Consistent typography, colour palette, and hero treatment across Home, About, Services, Team, and Contact.
-  - Buttons (CTAs, “Read More”, “View All”, Subscribe) share a unified style and 8px border radius.
+## Stack
 
-- **Service catalogue**
-  - Six equal‑height service cards in `service.html`:
-    - Arkham Automate
-    - Arkham AI App Builder
-    - Arkham Consulting
-    - Arkham Fraud Detect
-    - Arkham Edge Computing
-    - Arkham RPA
-  - Each card has an icon, title, descriptive copy, and CTA.
+- Runtime: Node.js with npm.
+- Server: Express.
+- Frontend: HTML, CSS, and vanilla JavaScript.
+- Styling: custom CSS with Bootstrap and Font Awesome assets.
+- Storage: local JSON file at `data/contact_submissions.json` for contact submissions.
+- Packaging: Docker.
+- Deployment: Azure App Service for Containers using Azure Container Registry and GitHub Actions.
 
-- **Contact and subscription flows**
-  - Contact page with a structured project enquiry form (name, email, company, phone, message, consent) that posts to `/api/contact` with client-side validation and inline status messages.
-  - Footer email “Subscribe” form on all main pages (wired to `mailto:` for simplicity, easy to swap for a real endpoint).
+## Requirements
 
-- **Simple tech stack**
-  - No build system or JS framework required for the frontend.
-  - Lightweight Node.js server (no external dependencies) handles static files plus the contact API endpoint.
-  - Uses Bootstrap for layout, Font Awesome for icons, Google Fonts, and a small amount of vanilla JS for behaviour (e.g. current year, carousel/slider).
+Before running this project, install:
 
-- **Deployment‑friendly**
-  - Works as a static site (GitHub Pages, Azure Static Web Apps, Nginx, Apache).
-  - Includes a Dockerfile for containerised hosting via Node.js so the contact API is available alongside the static files.
+- Node.js 18 or newer.
+- npm.
+- Docker, for container testing or server deployment.
+- An Azure subscription with App Service for Containers and Azure Container Registry, for production deployment.
 
-## File Structure
+## Configuration (.env)
 
-Key files in the `Arkham-Web` folder:
+The site runs without a `.env` file for basic local testing. Create one only when you need to change the port, restrict CORS origins, or enable Auth0.
 
-- `index.html` – Home page / hero and high‑level overview.
-- `about.html` – Company story, mission, and positioning (“We Are Arkham”).
-- `service.html` – Detailed service cards for the six Arkham offerings.
-- `team.html` – Leadership/team grid with photos and social links.
-- `contact.html` – Project enquiry form and contact details.
-- `css/bootstrap.css` – Bootstrap CSS.
-- `css/style.css` – Main custom styles, hero layout, buttons, cards, etc.
-- `css/responsive.css` – Additional responsive tweaks.
-- `images/` – Logos, hero illustration, and service icons.
-- `js/` – Any JavaScript used for basic interactivity.
-- `Dockerfile` – Node‑based container image that serves static files and the contact API.
+1. Create a local `.env` file:
 
-## Usage
+    ```bash
+    touch .env
+    ```
 
-You can run this static website by opening `index.html` directly in a browser or by serving it through a simple HTTP server. To use the contact API endpoint, run it via the Node.js server.
+2. Update `.env` with values for your local setup:
 
-### Option 1: Open Directly
+    ```bash
+    PORT=3000
+    BASE_URL=http://localhost:3000
+    ALLOWED_ORIGINS=http://localhost:3000
+    AUTH0_DOMAIN=
+    AUTH0_CLIENT_ID=
+    AUTH0_CLIENT_SECRET=
+    AUTH0_AUDIENCE=
+    AUTH0_ENTRA_CONNECTION=
+    ```
 
-1. Download or clone the repository:
+Environment notes:
 
-   ```bash
-   git clone https://github.com/aut0nate/Arkham-Web.git
-   cd Arkham-Web
-   ```
+- `PORT` controls the local server port. If omitted, the server uses `3000`.
+- `BASE_URL` sets the default public origin used by the server.
+- `ALLOWED_ORIGINS` is a comma-separated list of browser origins allowed to call the API.
+- `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, and `AUTH0_CLIENT_SECRET` enable Auth0 routes when all three are set.
+- `AUTH0_AUDIENCE` is returned to the frontend Auth0 configuration when provided.
+- `AUTH0_ENTRA_CONNECTION` optionally points login to a specific Microsoft Entra connection.
+- Contact submissions are stored locally in `./data/contact_submissions.json`; inside Docker this path is `/app/data/contact_submissions.json`.
 
-2. Double‑click index.html (or open it from your editor) in your browser.
+## Test Locally
 
-### Option 2: Serve with Node.js (enables /api/contact)
+1. Install dependencies:
 
-1. Install dependencies (there are no external packages, but this creates `package-lock.json`):
+    ```bash
+    npm install
+    ```
 
-   ```bash
-   npm install
-   ```
+2. Create and update `.env` using the configuration steps above, if you need optional settings.
 
-2. Start the server:
+3. Start the site and API:
 
-   ```bash
-   npm start
-   ```
+    ```bash
+    npm start
+    ```
 
-3. Open http://localhost:3000 to view the site. The contact form will POST to `/api/contact`, validate required fields, and persist submissions to `data/contact_submissions.json`.
+4. Open `http://127.0.0.1:3000`.
 
-### Option 3: Use a Local HTTP Server
+5. Test the main pages:
 
-If you prefer to run behind a local web server (recommended for testing relative paths and assets) and do not need the contact API, you can use Python:
+    ```text
+    http://127.0.0.1:3000/
+    http://127.0.0.1:3000/service.html
+    http://127.0.0.1:3000/about.html
+    http://127.0.0.1:3000/contact.html
+    ```
 
-   ```bash
-   cd Arkham-Web
-   python3 -m http.server 8000
-   ```
+6. Before handing off changes, run:
 
-For Nginx or Apache, copy the contents of Arkham-Web into the appropriate document root (for example /var/www/html) and reload the server.
+    ```bash
+    node --check server.js
+    npm test
+    ```
 
-## Running with Docker
+## Test Locally Using Docker
 
-This project includes a Dockerfile that serves the site via Node.js so the contact API remains available.
+Docker is useful for checking the Node.js server in a container before deploying it. This repository has a `Dockerfile`, but no local Docker Compose file.
 
-Build the image:
+1. Build the Docker image:
 
-   ```bash
-   docker build -t arkham-web .
-   ```
+    ```bash
+    docker build -t arkham-web .
+    ```
 
-Run the container:
+2. Start the container:
 
-  ```bash
-   docker run -d -p 8080:3000 --name arkham-web arkham-web
-   ```
+    ```bash
+    docker run -d -p 8080:3000 --name arkham-web arkham-web
+    ```
 
-Open http://localhost:8080 to view the site.
+    The site will be available at `http://127.0.0.1:8080`.
 
-## Live Demo
+3. Stop and remove the container when finished:
 
-GitHub Pages: [https://arkham.live](https://arkham.live)
+    ```bash
+    docker stop arkham-web
+    docker rm arkham-web
+    ```
 
-(You can also deploy the same static assets to Azure Static Web Apps, Azure App Service with a container, or any other static host.)
+## Server Deployment
 
-## Contributing
+Server deployment depends on where the project is hosted. The server should run the tested container image with production configuration stored separately from the repository.
 
-Contributions are welcome! Ideas that fit nicely with this project:
+Use the structure that fits your own environment and preferred deployment methods. For public-facing access, put the service behind HTTPS using a reverse proxy such as Nginx Proxy Manager, Caddy, Traefik, a managed platform router, or another preferred option.
 
-- Visual refinements (typography, spacing, accessibility).
-- Additional sections (FAQs, case studies, blog).
-- Improved forms (real backend for contact/subscribe, validation).
-- Better deployment examples (Azure pipelines, GitHub Actions, etc).
+The current production target is Azure App Service for Containers on the F1 Container plan. Images are published to Azure Container Registry:
 
-Fork the repo, create a feature branch, and open a pull request.
+```text
+arkham.azurecr.io/arkham-web:latest
+arkham.azurecr.io/arkham-web:<commit-sha>
+```
 
+For Azure App Service deployment:
 
-## Disclaimer
+1. Create or open the Azure Web App for Containers.
+2. Configure the Web App to use the `arkham` Azure Container Registry.
+3. Configure the main site container:
 
-This project is for educational and personal use only. It is not intended for commercial purposes. It was created with the help of OpenAI Codex to support specific learning goals, including Azure cloud services, CI/CD pipelines, Docker, and Git‑based workflows.
+    ```text
+    Container name: main
+    Image: arkham-web
+    Tag: latest, or a deployed commit SHA
+    Port: 3000
+    Startup command: leave blank
+    ```
+
+4. Assign the Web App managed identity the `AcrPull` role on the `arkham` registry.
+5. Add production application settings in the Web App:
+
+    ```text
+    PORT=3000
+    BASE_URL=https://example.com
+    ALLOWED_ORIGINS=https://example.com
+    ```
+
+6. Deploy through GitHub Actions after CI passes on `main`.
+7. Verify the public URL after deployment.
+
+Example production files:
+
+- `Dockerfile`
+- `.github/workflows/ci.yml`
+- `.github/workflows/cd.yml`
+
+After deployment, verify:
+
+- The public homepage loads.
+- The services, about, and contact pages load.
+- Invalid contact forms show validation errors.
+- Valid contact forms are saved to `data/contact_submissions.json`.
+
+Back up contact submissions regularly from the server storage location that contains `data/contact_submissions.json`.
+
+## GitHub Actions
+
+- `CI` runs on pull requests, pushes to `main`, and manual dispatch.
+- CI installs dependencies, checks `server.js`, runs `npm test`, and builds the Docker image.
+- `Deploy to Azure` runs after `CI` succeeds on `main`, or by manual dispatch.
+- CD logs in to Azure using OpenID Connect, pushes `latest` and commit SHA image tags to `arkham.azurecr.io`, updates the App Service `main` site container, sets `PORT=3000`, and restarts the Web App.
+- Deployment credentials should be stored in GitHub Actions secrets, not committed to the repository.
+- Production runtime values should live in Azure App Service application settings, not in workflow files.
+
+Required GitHub Actions secrets:
+
+```text
+AZURE_CLIENT_ID
+AZURE_TENANT_ID
+AZURE_SUBSCRIPTION_ID
+```
+
+Required GitHub Actions variables:
+
+```text
+AZURE_WEBAPP_NAME
+AZURE_RESOURCE_GROUP
+```
+
+The GitHub Actions Azure identity needs `AcrPush` on the `arkham` registry and permission to update the Web App, such as `Website Contributor`. The Web App managed identity needs `AcrPull` on the `arkham` registry so Azure can pull the image at runtime.
+
+## Security Notes
+
+- Do not commit `.env`.
+- Do not commit `data/contact_submissions.json` or other local contact submissions.
+- Store production secrets in the deployment environment or GitHub Actions secrets, not in the repository.
+- Use GitHub Actions OpenID Connect for Azure deployment instead of storing Azure client secrets.
+- Restrict `ALLOWED_ORIGINS` in production to the public site origin.
+- Rotate exposed secrets immediately.
+- Public visitors should only see content that is intended to be public.
+
+## AI-Assisted Development
+
+Arkham Web was built with **OpenAI Codex using GPT-5.5**. This repository includes an [`AGENTS.md`](./AGENTS.md) file, which provides structured instructions and context for AI coding agents. It defines expectations, constraints, and project-specific guidance to help keep contributions consistent and reliable.
+
+## Contributions
+
+Contributions, ideas, and suggestions are welcome.
+
+If you have improvements, feature ideas, or bug fixes, feel free to open an issue or submit a pull request. All contributions are appreciated and help improve the project.
 
 ## License
 

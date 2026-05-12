@@ -21,12 +21,6 @@ const auth0Config = {
   audience: process.env.AUTH0_AUDIENCE || ''
 };
 
-const auth0Config = {
-  domain: process.env.AUTH0_DOMAIN || '',
-  clientId: process.env.AUTH0_CLIENT_ID || '',
-  audience: process.env.AUTH0_AUDIENCE || ''
-};
-
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css',
@@ -67,76 +61,8 @@ function dynamicCors(req, res, next) {
   next();
 }
 
-function handleAuthConfig(req, res, origin, hostHeader) {
-  if (!setCorsHeaders(res, origin, hostHeader)) {
-    sendJson(res, 403, { error: 'Origin not allowed' });
-    return;
-  }
-
-  if (req.method === 'OPTIONS') {
-    res.statusCode = 204;
-    res.end();
-    return;
-  }
-
-  if (req.method !== 'GET') {
-    sendJson(res, 405, { error: 'Method not allowed' }, origin, hostHeader);
-    return;
-  }
-
-  if (!auth0Config.domain || !auth0Config.clientId) {
-    sendJson(
-      res,
-      500,
-      {
-        error: 'Auth0 configuration is missing',
-        details: 'Set AUTH0_DOMAIN and AUTH0_CLIENT_ID environment variables to enable authentication.'
-      },
-      origin,
-      hostHeader
-    );
-    return;
-  }
-
-  sendJson(res, 200, auth0Config, origin, hostHeader);
-}
-
-function handleAuthConfig(req, res, origin, hostHeader) {
-  if (!setCorsHeaders(res, origin, hostHeader)) {
-    sendJson(res, 403, { error: 'Origin not allowed' });
-    return;
-  }
-
-  if (req.method === 'OPTIONS') {
-    res.statusCode = 204;
-    res.end();
-    return;
-  }
-
-  if (req.method !== 'GET') {
-    sendJson(res, 405, { error: 'Method not allowed' }, origin, hostHeader);
-    return;
-  }
-
-  if (!auth0Config.domain || !auth0Config.clientId) {
-    sendJson(
-      res,
-      500,
-      {
-        error: 'Auth0 configuration is missing',
-        details: 'Set AUTH0_DOMAIN and AUTH0_CLIENT_ID environment variables to enable authentication.'
-      },
-      origin,
-      hostHeader
-    );
-    return;
-  }
-
-  sendJson(res, 200, auth0Config, origin, hostHeader);
-}
-
 function validatePayload(body) {
-  const errors = [];
+  const errors = {};
   const trimmed = (value) => (typeof value === 'string' ? value.trim() : '');
 
   const name = trimmed(body.name);
@@ -146,18 +72,40 @@ function validatePayload(body) {
   const message = trimmed(body.message);
   const consent = Boolean(body.consent);
 
-  if (!name) errors.push('Name is required.');
-  if (!email) {
-    errors.push('Email is required.');
-  } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-    errors.push('Email is invalid.');
+  if (!name) {
+    errors.name = 'Full name is required.';
+  } else if (name.length < 2 || name.length > 80) {
+    errors.name = 'Full name must be between 2 and 80 characters.';
   }
 
-  if (!message) errors.push('Project details are required.');
-  if (!consent) errors.push('Consent is required.');
+  if (!email) {
+    errors.email = 'Work email is required.';
+  } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+    errors.email = 'Enter a valid work email address.';
+  } else if (email.length > 254) {
+    errors.email = 'Work email must be 254 characters or fewer.';
+  }
+
+  if (company.length > 120) {
+    errors.company = 'Company must be 120 characters or fewer.';
+  }
+
+  if (phone && (!/^[+]?[-() \d]{7,20}$/.test(phone) || phone.length < 7 || phone.length > 20)) {
+    errors.phone = 'Enter a valid phone number.';
+  }
+
+  if (!message) {
+    errors.message = 'Project details are required.';
+  } else if (message.length < 20 || message.length > 1500) {
+    errors.message = 'Project details must be between 20 and 1500 characters.';
+  }
+
+  if (!consent) {
+    errors.consent = 'Consent is required to submit this form.';
+  }
 
   return {
-    isValid: errors.length === 0,
+    isValid: Object.keys(errors).length === 0,
     errors,
     payload: {
       name,
@@ -194,6 +142,7 @@ function mapStaticContentTypes(res, filePath) {
 const app = express();
 app.use(express.json());
 
+const authEnabled = Boolean(process.env.AUTH0_DOMAIN && process.env.AUTH0_CLIENT_ID && process.env.AUTH0_CLIENT_SECRET);
 const authConfig = {
   authRequired: false,
   auth0Logout: true,
@@ -210,24 +159,37 @@ const authConfig = {
   }
 };
 
-app.use(auth(authConfig));
+if (authEnabled) {
+  app.use(auth(authConfig));
 
-app.get(
-  '/login',
-  handleLogin((req) => {
-    const connection = process.env.AUTH0_ENTRA_CONNECTION;
-    const returnTo = req.query.returnTo || '/';
-    const authorizationParams = connection ? { connection } : undefined;
+  app.get(
+    '/login',
+    handleLogin((req) => {
+      const connection = process.env.AUTH0_ENTRA_CONNECTION;
+      const returnTo = req.query.returnTo || '/';
+      const authorizationParams = connection ? { connection } : undefined;
 
-    return {
-      returnTo,
-      authorizationParams
-    };
-  })
-);
+      return {
+        returnTo,
+        authorizationParams
+      };
+    })
+  );
 
-app.get('/callback', handleCallback());
-app.get('/logout', handleLogout());
+  app.get('/callback', handleCallback());
+  app.get('/logout', handleLogout());
+}
+
+app.get('/api/auth/config', dynamicCors, (req, res) => {
+  if (!authEnabled) {
+    return res.status(503).json({
+      error: 'Auth0 configuration is not enabled',
+      details: 'Set AUTH0_DOMAIN, AUTH0_CLIENT_ID, and AUTH0_CLIENT_SECRET to enable authentication.'
+    });
+  }
+
+  res.json(auth0Config);
+});
 
 app.post('/api/contact', dynamicCors, async (req, res) => {
   if (req.headers['x-requested-with'] !== 'XMLHttpRequest') {
@@ -236,7 +198,11 @@ app.post('/api/contact', dynamicCors, async (req, res) => {
 
   const validation = validatePayload(req.body || {});
   if (!validation.isValid) {
-    return res.status(400).json({ error: 'Validation failed', details: validation.errors });
+    return res.status(400).json({
+      error: 'Validation failed',
+      errors: validation.errors,
+      details: validation.errors
+    });
   }
 
   const submission = {
@@ -254,13 +220,19 @@ app.post('/api/contact', dynamicCors, async (req, res) => {
   }
 });
 
-app.get('/api/profile', dynamicCors, requiresAuth(), (req, res) => {
-  const user = req.oidc.user || req.oidc.idTokenClaims || {};
-  res.json({
-    user,
-    idTokenClaims: req.oidc.idTokenClaims || null
+if (authEnabled) {
+  app.get('/api/profile', dynamicCors, requiresAuth(), (req, res) => {
+    const user = req.oidc.user || req.oidc.idTokenClaims || {};
+    res.json({
+      user,
+      idTokenClaims: req.oidc.idTokenClaims || null
+    });
   });
-});
+} else {
+  app.get('/api/profile', dynamicCors, (req, res) => {
+    res.status(503).json({ error: 'Authentication is not enabled.' });
+  });
+}
 
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) {

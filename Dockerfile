@@ -3,10 +3,10 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package*.json ./
 
-# Install production dependencies (none by default) to support the API runtime
-RUN npm install --production=false
+# Install only the dependencies needed to run the site and API
+RUN npm ci --omit=dev
 
 COPY . .
 

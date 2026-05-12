@@ -1,628 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en-GB">
 <head>
-  <!-- Basic -->
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!-- Mobile Metas -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <!-- Site Metas -->
-  <meta name="keywords" content="AI consultancy, automation, AI app builder, workflow automation, London AI agency, Arkham" />
-  <meta name="description" content="Arkham is a London-based AI and automation consultancy delivering bespoke automation, custom AI applications, and strategic guidance for modern businesses." />
-  <meta name="author" content="Arkham" />
-  <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://arkham.live/" />
-  <link rel="shortcut icon" href="images/ArkhamSmall.png" type="">
-
-  <title>Arkham | AI & Automation Consultancy in London</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="Arkham, AI product studio, automation, AI applications, cloud">
+  <meta name="description" content="Arkham is an AI product studio building practical AI tools, workflow automations, and cloud systems for operational teams.">
+  <meta name="author" content="Arkham">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://arkham.live/">
+  <link rel="icon" href="images/arkham-logo.png" type="image/png">
+  <title>Arkham | AI Product Studio</title>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Arkham",
     "url": "https://arkham.live",
-    "logo": "https://arkham.live/images/ArkhamSmall.png",
-    "description": "London-based AI and automation consultancy delivering bespoke automation, AI apps, and strategic guidance.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Arkham HQ",
-      "addressLocality": "London",
-      "postalCode": "N1 0NE",
-      "addressCountry": "GB"
-    },
-    "contactPoint": [{
-      "@type": "ContactPoint",
-      "telephone": "+44-20-7788-99",
-      "contactType": "customer support",
-      "areaServed": "GB"
-    }],
-    "sameAs": [
-      "https://www.linkedin.com/company/arkham-live",
-      "https://twitter.com/arkham_live",
-      "https://instagram.com/arkham.live",
-      "https://www.youtube.com/@arkham"
-    ]
+    "logo": "https://arkham.live/images/arkham-logo.png",
+    "description": "Arkham is an AI product studio building practical AI tools, workflow automations, and cloud systems."
   }
   </script>
-
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
-  <!-- fonts style -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-  <!--owl slider stylesheet -->
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
-  <!-- font awesome style -->
-  <link href="css/font-awesome.min.css" rel="stylesheet" />
-
-  <!-- Custom styles for this template -->
-  <link href="css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
-
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
-
 <body>
-
-  <div class="hero_area">
-
-    <div class="hero_bg_box">
-      <div class="bg_img_box">
-        <img src="images/hero-bg.png" alt="Abstract technology background" loading="lazy">
-      </div>
+  <header class="site-header">
+    <div class="nav-shell">
+      <a class="brand" href="index.html" aria-label="Arkham home">
+        <span class="brand-mark"><img src="images/arkham-logo.png" alt="Arkham logo"></span>
+        <span>Arkham</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+      <nav class="nav-links" id="site-nav" aria-label="Primary navigation">
+        <a class="is-active" href="index.html">Home</a>
+        <a href="service.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- header section strats -->
-    <header class="header_section">
-      <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand d-flex align-items-center" href="index.html">
-            <img src="images/ArkhamSmall.png" class="nav-logo mr-2" alt="Arkham logo">
-            <span>
-              ARKHAM
-            </span>
-          </a>
-
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class=""> </span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav  ">
-              <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="service.html">Services</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="team.html">Team</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact</a>
-              </li>
-            </ul>
+  <main>
+    <section class="hero section">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">AI Product Studio / London</p>
+          <h1>AI Tools Built for Real Operational Work.</h1>
+          <p class="lede">Arkham designs and builds practical AI applications, automations, dashboards, and cloud systems for teams that need software to remove friction, not create theatre.</p>
+          <div class="hero-actions">
+            <a class="button" href="contact.html">Book a build call</a>
+            <a class="button secondary" href="service.html">View capabilities</a>
           </div>
-        </nav>
-      </div>
-    </header>
-    <!-- end header section -->
-    <!-- slider section -->
-    <section class="slider_section" style="padding-bottom: 45px;padding-top: 45px;">
-      <div id="heroCarousel" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="container">
-              <div class="hero-section">
-                <div class="hero-content">
-                  <h1>Enhancing Business Capabilities with AI &amp; Automation</h1>
-                  <p>
-                    Where innovation meets efficiency. Based in London, we're pioneering the future of Automation and Artificial Intelligence since 2015. Serving over 300 clients worldwide, we're dedicated to customising solutions in Automation, AI, and beyond. Let's build a smarter, more efficient world together.
-                  </p>
-                  <div class="hero-buttons">
-                    <a href="service.html" class="btn1">Explore services</a>
-                    <a href="contact.html" class="btn2">Book a call</a>
-                  </div>
-                </div>
-                <div class="hero-image">
-                  <img src="images/slider-img.png" alt="Stylized AI and automation representation" loading="eager">
-                </div>
+        </div>
+        <div class="hero-console" aria-label="Arkham studio metrics visual">
+          <div class="stats-panel">
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-value" data-count="9">9</div>
+                <p class="stat-label">Active Services</p>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" data-count="80" data-suffix="+">80+</div>
+                <p class="stat-label">Customers Supported</p>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" data-count="4" data-suffix=" wk">4 wk</div>
+                <p class="stat-label">Prototype Window</p>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" data-count="4">4</div>
+                <p class="stat-label">Delivery Stages</p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- end slider section -->
-  </div>
 
-
-  <!-- service section -->
-
-  <section class="service_section layout_padding">
-    <div class="service_container">
-      <div class="container ">
-        <div class="heading_container heading_center">
-          <h2>
-            Our <span>Services</span>
-          </h2>
-          <p>
-            Discover how our suite of AI and Automation services can redefine efficiency, drive innovation, and propel your business into the future.
-          </p>
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Featured Services</p>
+          <h2>Build Paths for Automation, AI, and Cloud Delivery.</h2>
         </div>
-        <div class="row">
-          <div class="col-md-4 ">
-            <div class="box ">
-              <div class="img-box">
-                <img src="images/arkham-automate.png" alt="Cloud automation icon" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <h5>
-                  Arkham Automate
-                </h5>
-                <p>
-                  Revolutionising workflows with bespoke automation solutions, enabling businesses to focus on their core operations while we automate the rest
-                </p>
-                <a href="" class="btn1">
-                  Read More
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 ">
-            <div class="box ">
-              <div class="img-box">
-                <img src="images/arkham-ai-app-builder.png" alt="AI application monitoring icon" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <h5>
-                  Arkham AI App Builder
-                </h5>
-                <p>
-                  Empowering organisations to build custom AI applications with ease, no matter the complexity of the task
-                </p>
-                <a href="" class="btn1">
-                  Read More
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 ">
-            <div class="box ">
-              <div class="img-box">
-                <img src="images/arkham-consulting.png" alt="Consulting and ideas icon" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <h5>
-                  Arkham Consulting
-                </h5>
-                <p>
-                  Providing expert consultancy in Automation and AI, guiding businesses through their digital transformation journey with strategic insights and practical implementations.
-                </p>
-                <a href="" class="btn1">
-                  Read More
-                </a>
-              </div>
-            </div>
-          </div>
+        <p>Featured from the full Arkham catalogue: practical routes for building internal tools, automating repeat work, improving reporting, and moving systems onto reliable cloud foundations.</p>
+      </div>
+      <div class="panel-grid">
+        <article class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" role="img" aria-label="Arkham App Builder icon"><rect class="frame" x="8" y="8" width="48" height="48" rx="10" fill="none" stroke-width="2"/><path class="mark" d="M18 18h12v12H18zM34 18h12v12H34zM18 34h12v12H18z" fill="none" stroke-width="2"/><path class="accent" d="M37 35l10 5-5 2-2 5z" fill="none" stroke-width="2"/></svg>
+          <p class="card-kicker">Automation</p>
+          <h3>Arkham App Builder</h3>
+          <p>Low-code and no-code application delivery for teams that need internal tools fast.</p>
+        </article>
+        <article class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" role="img" aria-label="Arkham Automate icon"><rect class="frame" x="8" y="8" width="48" height="48" rx="10" fill="none" stroke-width="2"/><path class="mark" d="M21 26a11 11 0 0 1 20-5l4 5M43 38a11 11 0 0 1-20 5l-4-5" fill="none" stroke-width="2"/><path class="accent" d="M45 18v8h-8M19 46v-8h8M28 32h8" fill="none" stroke-width="2"/></svg>
+          <p class="card-kicker">Automation</p>
+          <h3>Arkham Automate</h3>
+          <p>Workflow automation that reduces repetitive work and keeps operational processes moving.</p>
+        </article>
+        <article class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" role="img" aria-label="Arkham Fraud Detect icon"><rect class="frame" x="8" y="8" width="48" height="48" rx="10" fill="none" stroke-width="2"/><path class="mark" d="M32 17l16 6v10c0 10-6 17-16 21-10-4-16-11-16-21V23z" fill="none" stroke-width="2"/><path class="accent" d="M32 25v12M32 43h.1M22 32h6M36 32h6" fill="none" stroke-width="2"/></svg>
+          <p class="card-kicker">AI</p>
+          <h3>Arkham Fraud Detect</h3>
+          <p>AI-assisted detection and prevention support for suspicious financial activity.</p>
+        </article>
+        <article class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" role="img" aria-label="Arkham Cloud Migration icon"><rect class="frame" x="8" y="8" width="48" height="48" rx="10" fill="none" stroke-width="2"/><path class="mark" d="M22 41h23a7 7 0 0 0 0-14 11 11 0 0 0-21-3 8 8 0 0 0-2 17z" fill="none" stroke-width="2"/><path class="accent" d="M21 49h20M36 45l5 4-5 4M23 25h-6M21 21l-4 4 4 4" fill="none" stroke-width="2"/></svg>
+          <p class="card-kicker">Cloud</p>
+          <h3>Arkham Cloud Migration</h3>
+          <p>Cloud assessment, migration, and optimisation for systems that need a steadier platform.</p>
+        </article>
+        <article class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" role="img" aria-label="Arkham BI icon"><rect class="frame" x="8" y="8" width="48" height="48" rx="10" fill="none" stroke-width="2"/><path class="mark" d="M18 19h28v26H18zM24 39V29M32 39V24M40 39V33" fill="none" stroke-width="2"/><path class="accent" d="M22 25h5M37 25h5M22 45h20" fill="none" stroke-width="2"/></svg>
+          <p class="card-kicker">Automation</p>
+          <h3>Arkham BI</h3>
+          <p>Reports and dashboards that turn operational data into clearer decisions.</p>
+        </article>
+        <article class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" role="img" aria-label="Arkham Edge Computing icon"><rect class="frame" x="8" y="8" width="48" height="48" rx="10" fill="none" stroke-width="2"/><path class="mark" d="M20 20h16v24H20zM42 24h4M42 32h8M42 40h4" fill="none" stroke-width="2"/><path class="accent" d="M28 26h.1M28 32h.1M28 38h.1M36 32h6" fill="none" stroke-width="2"/></svg>
+          <p class="card-kicker">Cloud</p>
+          <h3>Arkham Edge Computing</h3>
+          <p>Edge deployment and management for lower latency, faster response times, and improved resilience.</p>
+        </article>
+      </div>
+      <div class="section-actions">
+        <a class="button secondary" href="service.html">Explore All 9 Services</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Delivery Model</p>
+          <h2>Designed for Useful Software, Not Slide Decks.</h2>
         </div>
-        <div class="btn-box">
-          <a class="btn1" href="service.html">
-            View All
-          </a>
+        <p>Arkham keeps discovery short, prototypes quickly, then hardens the tool around real users, data, and deployment constraints.</p>
+      </div>
+      <div class="process-grid">
+        <article class="process-step" data-step="01"><h3>Map</h3><p>Understand the workflow, data, decisions, and failure points.</p></article>
+        <article class="process-step" data-step="02"><h3>Prototype</h3><p>Build a working version early so assumptions are tested in practice.</p></article>
+        <article class="process-step" data-step="03"><h3>Deploy</h3><p>Package the application or automation for the environment it must live in.</p></article>
+        <article class="process-step" data-step="04"><h3>Improve</h3><p>Measure what changes, tune the system, and remove rough edges.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div>
+          <strong>Arkham</strong>
+          <p>&copy; <span id="displayYear"></span> Arkham. AI product studio.</p>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- end service section -->
-
-
-  <!-- about section -->
-
-  <section class="about_section layout_padding">
-    <div class="container  ">
-      <div class="heading_container heading_center">
-        <h2>
-          About <span>Us</span>
-        </h2>
-        <p>
-          Welcome to Arkham, a leading specialist in Automation and Artificial Intelligence solutions, proudly rooted in the heart of London, UK. Since our inception in 2015, Arkham has steadfastly paved the way in the AI and automation landscape, evolving into a beacon of innovation and bespoke service delivery. With a global footprint that extends to over 300 satisfied clients, we are committed to transcending the boundaries of technology to deliver excellence and efficiency.
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-md-6 ">
-          <div class="img-box">
-            <img src="images/ai-logo.png" alt="Arkham AI logo" class="round-image" loading="lazy">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="detail-box">
-            <h3>
-              We Are Arkham
-            </h3>
-            <p>
-              Our mission is to revolutionize the way businesses operate by integrating cutting-edge Artificial Intelligence and Automation solutions. We are dedicated to enhancing our clients' capabilities, efficiency, and competitiveness through innovative technology. By providing expertly crafted, bespoke AI and Automation services, we aim to solve complex challenges, streamline operations, and empower businesses to achieve their full potential.
-            </p>
-            <a href="about.html" class="btn1">
-              Read More
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- end about section -->
-
-  <!-- why section -->
-
-  <section class="why_section layout_padding">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          Why Choose <span>Us</span>
-        </h2>
-      </div>
-      <div class="why_container">
-        <div class="box">
-          <div class="img-box">
-            <img src="images/img1.png" alt="Bespoke solution design icon" loading="lazy">
-          </div>
-          <div class="detail-box">
-            <h5>
-              Bespoke Technical Solutions
-            </h5>
-            <p>
-              Every organisation's needs are as unique as a fingerprint, and our approach to technical consulting honours that individuality. We delve into the nuances of your operations, crafting tailored solutions that not only resolve current issues but also position you for future innovation and growth. Our team's adeptness at designing personalised systems and our keen eye for detail ensures a partnership that respects your company's specific ethos and aspirations.
-            </p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="img-box">
-            <img src="images/img2.png" alt="Support and maintenance icon" loading="lazy">
-          </div>
-          <div class="detail-box">
-            <h5>
-              Dedicated Support
-            </h5>
-            <p>
-              Our support doesn't end with the deployment of solutions; it's only the beginning. We stand by our clients with ongoing, dedicated support, ensuring that your operations run smoothly and efficiently. Whether it's immediate troubleshooting or strategic advice for continual improvement, our team becomes an extension of yours, committed to your success around the clock.
-            </p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="img-box">
-            <img src="images/img3.png" alt="Cutting-edge expertise icon" loading="lazy">
-          </div>
-          <div class="detail-box">
-            <h5>
-              Cutting-Edge Expertise
-            </h5>
-            <p>
-              Staying ahead in today's digital landscape demands a forward-thinking approach, and our experts are at the forefront of technological evolution. We invest in continual learning and adopt the latest advancements, bringing you insights and capabilities that keep you a step ahead. With us, you can rest assured that your IT infrastructure is in the hands of professionals who are as passionate about technology as they are skilled.
-            </p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="img-box">
-            <img src="images/img4.png" alt="Client experience icon" loading="lazy">
-          </div>
-          <div class="detail-box">
-            <h5>
-              Client-Centric Experience
-            </h5>
-            <p>
-              Your satisfaction is the cornerstone of our business model. We measure our success by the contentment and loyalty of our customers. From the initial consultation to the final execution, every step is taken with your best interest in mind. The testimonials of our numerous satisfied clients speak volumes of the trust and value we strive to deliver. With us, you're not just choosing a service; you're choosing a partner who values your happiness as much as our own.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- end why section -->
-
-  <!-- team section -->
-  <section class="team_section layout_padding">
-    <div class="container-fluid">
-      <div class="heading_container heading_center">
-        <h2 class="">
-          Our <span> Team</span>
-        </h2>
-      </div>
-
-      <div class="team_container">
-        <div class="row">
-          <div class="col-lg-3 col-sm-6">
-            <div class="box ">
-              <div class="img-box">
-                <img src="images/david-harris.png" class="img1" alt="Portrait of Nate Dean, Founder and CEO" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <h5>
-                  David Harris
-                </h5>
-                <p>
-                  CEO
-                </p>
-              </div>
-              <div class="social_box">
-                <a href="https://www.facebook.com/arkhamlive" target="_blank" rel="noopener" aria-label="Arkham on Facebook">
-                  <i class="fa fa-facebook" aria-hidden="true"></i>
-                </a>
-                <a href="https://twitter.com/arkham_live" target="_blank" rel="noopener" aria-label="Arkham on X">
-                  <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-                <a href="https://www.linkedin.com/company/arkham-live" target="_blank" rel="noopener" aria-label="Arkham on LinkedIn">
-                  <i class="fa fa-linkedin" aria-hidden="true"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-sm-6">
-            <div class="box ">
-              <div class="img-box">
-                <img src="images/lindsay-green.png" class="img1" alt="Portrait of Megan Peters, Operations Director" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <h5>
-                  Lindsay Green
-                </h5>
-                <p>
-                  COO
-                </p>
-              </div>
-              <div class="social_box">
-                <a href="https://www.facebook.com/arkhamlive" target="_blank" rel="noopener" aria-label="Arkham on Facebook">
-                  <i class="fa fa-facebook" aria-hidden="true"></i>
-                </a>
-                <a href="https://twitter.com/arkham_live" target="_blank" rel="noopener" aria-label="Arkham on X">
-                  <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-                <a href="https://www.linkedin.com/company/arkham-live" target="_blank" rel="noopener" aria-label="Arkham on LinkedIn">
-                  <i class="fa fa-linkedin" aria-hidden="true"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-sm-6">
-            <div class="box ">
-              <div class="img-box">
-                <img src="images/theo-reid.png" class="img1" alt="Portrait of Justin Edwards, IT Director" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <h5>
-                  Theo Reid
-                </h5>
-                <p>
-                  CFO
-                </p>
-              </div>
-              <div class="social_box">
-                <a href="https://www.facebook.com/arkhamlive" target="_blank" rel="noopener" aria-label="Arkham on Facebook">
-                  <i class="fa fa-facebook" aria-hidden="true"></i>
-                </a>
-                <a href="https://twitter.com/arkham_live" target="_blank" rel="noopener" aria-label="Arkham on X">
-                  <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-                <a href="https://www.linkedin.com/company/arkham-live" target="_blank" rel="noopener" aria-label="Arkham on LinkedIn">
-                  <i class="fa fa-linkedin" aria-hidden="true"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-sm-6">
-            <div class="box ">
-              <div class="img-box">
-                <img src="images/nicole-lazzini.png" class="img1" alt="Portrait of Nicole Lazzini, Finance Director" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <h5>
-                  Nicole Lazzini
-                </h5>
-                <p>
-                  CIO
-                </p>
-              </div>
-              <div class="social_box">
-                <a href="https://www.facebook.com/arkhamlive" target="_blank" rel="noopener" aria-label="Arkham on Facebook">
-                  <i class="fa fa-facebook" aria-hidden="true"></i>
-                </a>
-                <a href="https://twitter.com/arkham_live" target="_blank" rel="noopener" aria-label="Arkham on X">
-                  <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-                <a href="https://www.linkedin.com/company/arkham-live" target="_blank" rel="noopener" aria-label="Arkham on LinkedIn">
-                  <i class="fa fa-linkedin" aria-hidden="true"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- end team section -->
-
-
-
-  <!-- client section -->
-
-  <section class="client_section layout_padding">
-    <div class="container">
-      <div class="heading_container heading_center psudo_white_primary mb_45">
-        <h2>
-          What our <span>Customers</span> say
-        </h2>
-      </div>
-      <div class="carousel-wrap ">
-        <div class="owl-carousel client_owl-carousel">
-          <div class="item">
-            <div class="box">
-              <div class="img-box">
-                <img src="images/client1.jpg" alt="Portrait of client Lewis Daniels" class="box-img" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <div class="client_id">
-                  <div class="client_info">
-                    <h6>
-                      Lewis Daniels
-                    </h6>
-                    <p>
-                      Birmingham, UK
-                    </p>
-                  </div>
-                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                </div>
-                <p>
-                  As a small business owner, I was initially overwhelmed by the complexity of digital transformation. However, since partnering with this team, the transition has been seamless. Their technical consultancy not only modernised our systems but also enriched our staff with the knowledge to thrive. The ongoing support is exceptional – any queries are addressed promptly and with such clarity that it feels like they are part of our in-house team. I couldn't be happier with the service and the peace of mind it brings. </p>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="box">
-              <div class="img-box">
-                <img src="images/client2.jpg" alt="Portrait of client Zoe Harris" class="box-img" loading="lazy">
-              </div>
-              <div class="detail-box">
-                <div class="client_id">
-                  <div class="client_info">
-                    <h6>
-                      Zoe Harris
-                    </h6>
-                    <p>
-                      London, UK
-                    </p>
-                  </div>
-                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                </div>
-                <p>
-                  I'm thoroughly impressed with the bespoke solutions provided to us. Their attention to detail and tailored approach has not only solved our immediate needs but also paved the way for future innovations. The team's proactive stance on potential issues is remarkable, ensuring we stay ahead of the curve. Their expertise is evident, and their client-centric nature makes them a pleasure to work with. They've not just met our expectations; they've exceeded them.</p>
-              </div>
-            </div>
-          </div>
-    </div>
-  </section>
-
-  <!-- end client section -->
-
-  <!-- info section -->
-
-  <section class="info_section layout_padding2">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 col-lg-3 info_col">
-          <div class="info_contact">
-            <h4>
-              Address
-            </h4>
-            <div class="contact_link_box">
-              <a href="https://maps.google.com/?q=Arkham%20HQ%2C%20London%2C%20N1%200NE" target="_blank" rel="noopener">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span>
-                  Arkham HQ, London, N1 0NE
-                </span>
-              </a>
-              <a href="tel:+4420778899">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span>
-                  020 7788 99
-                </span>
-              </a>
-              <a href="mailto:contact@arkham.live">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span>
-                  contact@arkham.live
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="info_social">
-            <a href="https://www.facebook.com/arkhamlive" target="_blank" rel="noopener" aria-label="Arkham on Facebook">
-              <i class="fa fa-facebook" aria-hidden="true"></i>
-            </a>
-            <a href="https://twitter.com/arkham_live" target="_blank" rel="noopener" aria-label="Arkham on X">
-              <i class="fa fa-twitter" aria-hidden="true"></i>
-            </a>
-            <a href="https://www.linkedin.com/company/arkham-live" target="_blank" rel="noopener" aria-label="Arkham on LinkedIn">
-              <i class="fa fa-linkedin" aria-hidden="true"></i>
-            </a>
-            <a href="https://www.instagram.com/arkham.live" target="_blank" rel="noopener" aria-label="Arkham on Instagram">
-              <i class="fa fa-instagram" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-2 mx-auto info_col">
-          <div class="info_link_box">
-            <h4>
-              Links
-            </h4>
-            <div class="info_links">
-              <a class="active" href="index.html">
-                Home
-              </a>
-              <a class="" href="about.html">
-                About
-              </a>
-              <a class="" href="service.html">
-                Services
-              </a>
-              <a class="" href="team.html">
-                Team
-              </a>
-              <a class="" href="contact.html">
-                Contact
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3 info_col ">
-          <h4>
-            Subscribe
-          </h4>
-          <form action="mailto:contact@arkham.live" method="post">
-            <input type="email" name="email" placeholder="Enter email" aria-label="Email address" required />
-            <button type="submit" class="btn1 subscribe-btn">
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- end info section -->
-
-  <!-- footer section -->
-  <section class="footer_section">
-    <div class="container">
-      <p>
-        &copy; <span id="displayYear"></span> All Rights Reserved By Arkham
-      </p>
-    </div>
-  </section>
-  <!-- footer section -->
-
-  <!-- jQery -->
-  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.5/auth0-spa-js.production.js" defer></script>
-  <script type="text/javascript" src="js/auth.js" defer></script>
-  <script type="text/javascript" src="js/jquery-3.4.1.min.js" defer></script>
-  <!-- popper js -->
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous" defer>
-  </script>
-  <!-- bootstrap js -->
-  <script type="text/javascript" src="js/bootstrap.js" defer></script>
-  <!-- owl slider -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" defer>
-  </script>
-  <!-- custom js -->
-  <script type="text/javascript" src="js/custom.js" defer></script>
+  </footer>
+  <script src="js/custom.js" defer></script>
 </body>
-
 </html>
